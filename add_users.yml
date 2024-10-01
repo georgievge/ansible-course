@@ -1,0 +1,20 @@
+---
+- name: add users
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+
+    - name: ensure wheel group on host
+      group:
+        name: wheel
+        state: present
+
+    - name: Add the user 'johnd'
+      ansible.builtin.user:
+        name: johnd
+        generate_ssh_key: yes
+        comment: John Doe
+        group: wheel
+        create_home: yes
