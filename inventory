@@ -1,0 +1,15 @@
+[prod]
+
+[prod:children]
+group_ubuntu
+group_redhat
+
+
+[group_ubuntu]
+ubuntu-01
+
+[group_redhat]
+redhat-01
+
+[control-host]
+ansible-host
