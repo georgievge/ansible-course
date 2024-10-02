@@ -3,6 +3,7 @@
 [prod:children]
 group_ubuntu
 group_redhat
+group_rockylinux
 
 
 [group_ubuntu]
@@ -10,6 +11,9 @@ ubuntu-01
 
 [group_redhat]
 redhat-01
+
+[group_rockylinux]
+rockylinux-01
 
 [control-host]
 ansible-host
