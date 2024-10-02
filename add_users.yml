@@ -3,6 +3,24 @@
   hosts: all
   gather_facts: no
   become: yes
+  vars:
+    deployed_users:
+      - name: johnd
+        comment: John Doe
+        group: wheel
+        create_home: yes
+      - name: ruskov
+        comment: Dimitar Ruskov
+        group: wheel
+        create_home: yes
+      - name: icaka
+        comment: Hristo Murdjev
+        group: wheel
+        create_home: yes
+    users:
+      johnd: "ALL=(ALL) NOPASSWD:ALL"
+      ruskov: "ALL=(ALL) NOPASSWD:ALL"
+      icaka: "ALL=(ALL) NOPASSWD:ALL"
 
   tasks:
 
@@ -11,10 +29,14 @@
         name: wheel
         state: present
 
-    - name: Add the user 'johnd'
+    - name: Add the users
       ansible.builtin.user:
-        name: johnd
-        generate_ssh_key: yes
-        comment: John Doe
-        group: wheel
-        create_home: yes
+        name: "{{ item.name }}"
+        comment: "{{ item.comment }}"
+        group: "{{ item.group }}"
+        create_home: "{{ item.create_home }}"
+      loop: "{{ deployed_users }}"
+
+    - name: Grant sudoers to users
+      ansible.builtin.include_role:
+        name: ansible-role-add-user-sudoers
