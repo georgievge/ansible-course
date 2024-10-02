@@ -1,0 +1,20 @@
+---
+- name: reboot servers
+  hosts: prod
+  gather_facts: no
+  become: yes
+
+  tasks:
+
+    - name: check users online
+      ansible.builtin.shell: who | grep -v root
+      register: online_users
+      ignore_errors: true
+
+    - name: Show run code
+      ansible.builtin.debug:
+        var: online_users.rc
+
+    - name: reboot server
+      ansible.builtin.reboot:
+      when: online_users.rc == 1
